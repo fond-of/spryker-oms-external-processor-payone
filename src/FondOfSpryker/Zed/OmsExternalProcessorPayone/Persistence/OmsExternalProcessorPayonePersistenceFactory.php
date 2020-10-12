@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\OmsExternalProcessorPayone\Persistence;
 
+use FondOfSpryker\Zed\OmsExternalProcessorPayone\Dependency\Facade\OmsExternalProcessorPayoneToStoreInterface;
 use FondOfSpryker\Zed\OmsExternalProcessorPayone\OmsExternalProcessorPayoneDependencyProvider;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
@@ -15,6 +16,14 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
  */
 class OmsExternalProcessorPayonePersistenceFactory extends AbstractPersistenceFactory
 {
+    /**
+     * @return \FondOfSpryker\Zed\OmsExternalProcessorPayone\Dependency\Facade\OmsExternalProcessorPayoneToStoreInterface
+     */
+    public function getStoreFacade(): OmsExternalProcessorPayoneToStoreInterface
+    {
+        return $this->getProvidedDependency(OmsExternalProcessorPayoneDependencyProvider::FACADE_STORE);
+    }
+
     /**
      * @return \Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery
      */

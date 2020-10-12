@@ -2,15 +2,15 @@
 
 namespace FondOfSpryker\Zed\OmsExternalProcessorPayone\Persistence;
 
-
 use Codeception\Test\Unit;
+use DateTime;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Propel\Runtime\Collection\ObjectCollection;
 
-
 /**
  * Auto-generated group annotations
+ *
  * @group FondOfSpryker
  * @group Zed
  * @group OmsExternalProcessorPayone
@@ -45,6 +45,9 @@ class OmsExternalProcessorPayoneEntityManagerTest extends Unit
      */
     protected $entityManager;
 
+    /**
+     * @return void
+     */
     public function _before()
     {
         parent::_before();
@@ -57,10 +60,14 @@ class OmsExternalProcessorPayoneEntityManagerTest extends Unit
         $this->entityManager->setFactory($this->factoryMock);
     }
 
-    public function testGetOrdersByStateAndAge()
+    /**
+     * @return void
+     */
+    public function testGetOrdersByStateAndAge(): void
     {
         $this->factoryMock->expects($this->once())->method('getSpySalesOrderQuery')->willReturn($this->salesOrderQueryMock);
         $this->salesOrderQueryMock->expects($this->once())->method('filterByIdItemState')->willReturn($this->salesOrderQueryMock);
+        $this->salesOrderQueryMock->expects($this->once())->method('filterByStore')->willReturn($this->salesOrderQueryMock);
         $this->salesOrderQueryMock->expects($this->once())->method('find')->willReturn($this->objectCollection);
         $this->salesOrderQueryMock->expects($this->never())->method('filterByCreatedAt_Between');
         $this->objectCollection->expects($this->once())->method('getData')->willReturn([]);
@@ -68,18 +75,22 @@ class OmsExternalProcessorPayoneEntityManagerTest extends Unit
         $this->entityManager->getOrdersByStateAndAge(1);
     }
 
-    public function testGetOrdersByStateAndAgeWithAgeProvided()
+    /**
+     * @return void
+     */
+    public function testGetOrdersByStateAndAgeWithAgeProvided():void
     {
         $self = $this;
         $this->factoryMock->expects($this->once())->method('getSpySalesOrderQuery')->willReturn($this->salesOrderQueryMock);
         $this->salesOrderQueryMock->expects($this->once())->method('filterByIdItemState')->willReturn($this->salesOrderQueryMock);
+        $this->salesOrderQueryMock->expects($this->once())->method('filterByStore')->willReturn($this->salesOrderQueryMock);
         $this->salesOrderQueryMock->expects($this->once())->method('find')->willReturn($this->objectCollection);
-        $this->salesOrderQueryMock->expects($this->once())->method('filterByCreatedAt_Between')->will($this->returnCallback(static function($args)use($self){
+        $this->salesOrderQueryMock->expects($this->once())->method('filterByCreatedAt_Between')->will($this->returnCallback(static function ($args) use ($self) {
             $self->assertArrayHasKey('min', $args);
             $self->assertArrayHasKey('max', $args);
 
-            $min = new \DateTime($args['min']);
-            $max = new \DateTime($args['max']);
+            $min = new DateTime($args['min']);
+            $max = new DateTime($args['max']);
             $diff = $max->diff($min);
             $self->assertSame(10, $diff->days);
         }));

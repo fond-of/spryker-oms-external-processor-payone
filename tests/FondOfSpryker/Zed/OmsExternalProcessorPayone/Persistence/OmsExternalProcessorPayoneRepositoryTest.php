@@ -2,15 +2,14 @@
 
 namespace FondOfSpryker\Zed\OmsExternalProcessorPayone\Persistence;
 
-
 use Codeception\Test\Unit;
 use Exception;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemState;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 
-
 /**
  * Auto-generated group annotations
+ *
  * @group FondOfSpryker
  * @group Zed
  * @group OmsExternalProcessorPayone
@@ -40,6 +39,9 @@ class OmsExternalProcessorPayoneRepositoryTest extends Unit
      */
     protected $repository;
 
+    /**
+     * @return void
+     */
     public function _before()
     {
         parent::_before();
@@ -51,6 +53,9 @@ class OmsExternalProcessorPayoneRepositoryTest extends Unit
         $this->repository->setFactory($this->factoryMock);
     }
 
+    /**
+     * @return void
+     */
     public function testGetStateIdByName()
     {
         $this->factoryMock->expects($this->once())->method('getSpyOmsOrderItemStateQuery')->willReturn($this->spyOmsOrderItemStateQueryMock);
@@ -60,6 +65,9 @@ class OmsExternalProcessorPayoneRepositoryTest extends Unit
         $this->repository->getStateIdByName('test');
     }
 
+    /**
+     * @return void
+     */
     public function testGetStateIdByNameException()
     {
         $this->factoryMock->expects($this->once())->method('getSpyOmsOrderItemStateQuery')->willReturn($this->spyOmsOrderItemStateQueryMock);
@@ -69,7 +77,7 @@ class OmsExternalProcessorPayoneRepositoryTest extends Unit
         $catch = null;
         try {
             $this->repository->getStateIdByName('test');
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $catch = $exception;
         }
         $this->assertSame('State with name test not found!', $catch->getMessage());

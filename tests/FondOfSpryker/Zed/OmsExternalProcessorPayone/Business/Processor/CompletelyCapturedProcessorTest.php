@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Zed\OmsExternalProcessorPayone\Business\Processor;
 
-
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\OmsExternalProcessorPayone\Dependency\Facade\OmsExternalProcessorPayoneToOmsInterface;
 use FondOfSpryker\Zed\OmsExternalProcessorPayone\OmsExternalProcessorPayoneConfig;
@@ -13,9 +12,9 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Propel\Runtime\Collection\ObjectCollection;
 
-
 /**
  * Auto-generated group annotations
+ *
  * @group FondOfSpryker
  * @group Zed
  * @group OmsExternalProcessorPayone
@@ -51,6 +50,9 @@ class CompletelyCapturedProcessorTest extends Unit
      */
     protected $processor;
 
+    /**
+     * @return void
+     */
     public function _before()
     {
         parent::_before();
@@ -68,6 +70,9 @@ class CompletelyCapturedProcessorTest extends Unit
         );
     }
 
+    /**
+     * @return void
+     */
     public function testProcessCapturedOrdersNoOrdersFound()
     {
         $this->configMock->expects($this->once())->method('getCapturedStateName')->willReturn('captured');
@@ -80,6 +85,9 @@ class CompletelyCapturedProcessorTest extends Unit
         $this->processor->processCapturedOrders($responseTransferMock);
     }
 
+    /**
+     * @return void
+     */
     public function testProcessCapturedOrdersItemsInWrongState()
     {
         $itemMock = $this->getMockBuilder(SpySalesOrderItem::class)->disableOriginalConstructor()->getMock();
@@ -97,6 +105,9 @@ class CompletelyCapturedProcessorTest extends Unit
         $this->processor->processCapturedOrders($responseTransferMock);
     }
 
+    /**
+     * @return void
+     */
     public function testProcessCapturedOrders()
     {
         $itemMock = $this->getMockBuilder(SpySalesOrderItem::class)->disableOriginalConstructor()->getMock();
@@ -110,13 +121,15 @@ class CompletelyCapturedProcessorTest extends Unit
         $this->entityManagerMock->expects($this->once())->method('getOrdersByStateAndAge')->willReturn([$salesOrderMock]);
         $this->omsFacadeMock->expects($this->once())->method('triggerEvent')->willReturn([]);
 
-
         $responseTransferMock = $this->getMockBuilder(ExternalProcessingResponseTransfer::class)->getMock();
         $responseTransferMock->expects($this->once())->method('addProcessedOrder');
         $responseTransferMock->expects($this->never())->method('addFailedOrder');
         $this->processor->processCapturedOrders($responseTransferMock);
     }
 
+    /**
+     * @return void
+     */
     public function testProcessCapturedOrdersError()
     {
         $this->markTestSkipped();
@@ -128,7 +141,6 @@ class CompletelyCapturedProcessorTest extends Unit
         $this->repositoryMock->expects($this->once())->method('getStateIdByName')->willReturn(11);
         $this->entityManagerMock->expects($this->once())->method('getOrdersByStateAndAge')->willReturn([$salesOrderMock]);
         $this->omsFacadeMock->expects($this->once())->method('triggerEvent')->willReturn([]);
-
 
         $responseTransferMock = $this->getMockBuilder(ExternalProcessingResponseTransfer::class)->getMock();
         $responseTransferMock->expects($this->never())->method('addProcessedOrder');

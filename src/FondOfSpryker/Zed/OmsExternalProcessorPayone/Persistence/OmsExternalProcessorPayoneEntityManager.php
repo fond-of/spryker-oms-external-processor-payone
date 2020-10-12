@@ -22,7 +22,7 @@ class OmsExternalProcessorPayoneEntityManager extends AbstractEntityManager impl
      */
     public function getOrdersByStateAndAge(int $stateId, ?int $maxAgeInDays = null): array
     {
-        $query = $this->getFactory()->getSpySalesOrderQuery()->filterByIdItemState($stateId);
+        $query = $this->getFactory()->getSpySalesOrderQuery()->filterByIdItemState($stateId)->filterByStore($this->getFactory()->getStoreFacade()->getCurrentStore()->getName());
         if ($maxAgeInDays !== null) {
             $now = new DateTime();
             $past = new DateTime();
